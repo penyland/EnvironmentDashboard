@@ -1,0 +1,25 @@
+﻿@page "/environments"
+@using Microsoft.FluentUI.AspNetCore.Components
+
+<FluentCard>
+    <h2>Hello Environments!</h2>
+    <FluentIcon Value="@(new Icons.Regular.Size24.Clock())" />
+    <FluentEmoji Value="@(new Emojis.PeopleBody.Color.Default.Artist())" />
+    <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
+</FluentCard>
+
+<FluentDataGrid Items="@environments">
+    <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.Name)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.Url)" Sortable="true" />
+</FluentDataGrid>
+
+@code {
+
+    IQueryable<Environment> environments = new[]
+    {
+        new Environment(1, "Test", "Test", "Test"),
+        new Environment(1, "Test", "Test", "Test")
+    }.AsQueryable();
+
+}
