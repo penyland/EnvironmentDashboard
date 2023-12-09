@@ -1,4 +1,4 @@
-﻿namespace EnvironmentDashboard.Features.Environments;
+﻿namespace EnvironmentDashboard.Components.Environments;
 
 public record Environment
 {
