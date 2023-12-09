@@ -2,12 +2,43 @@
 
 <PageTitle>Home</PageTitle>
 
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="#">
+        Home
+        <FluentIcon Value="@(new Icons.Regular.Size16.Home())" Color="@Color.Neutral" Slot="start" />
+    </FluentBreadcrumbItem>
+    <FluentBreadcrumbItem Href="#">
+        Environments
+        <FluentIcon Value="@(new Icons.Regular.Size16.Clipboard())" Color="@Color.Neutral" Slot="start" />
+    </FluentBreadcrumbItem>
+</FluentBreadcrumb>
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
+    <FluentButton IconStart="@(new Icons.Regular.Size16.AddCircle())">
+        Add Environment
+    </FluentButton>
+</FluentStack>
+
 <FluentCard>
     <h2>Hello Environments!</h2>
     <FluentIcon Value="@(new Icons.Regular.Size24.Clock())" />
     <FluentEmoji Value="@(new Emojis.PeopleBody.Color.Default.Artist())" />
     <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
 </FluentCard>
+
+<FluentStack Orientation="Orientation.Horizontal">
+    <div style="width: 300px; margin-top:20px">
+        <h3>Feature</h3>
+        <div>
+            <FluentCard>
+                <FluentStack Orientation="Orientation.Horizontal">
+                    <FluentIcon Value="@(new Icons.Regular.Size24.Clock())" />
+                    <h4>ExampleService</h4>
+                </FluentStack>
+                <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
+            </FluentCard>
+        </div>
+    </div>
+</FluentStack>
 
 <FluentDataGrid Items="@people">
     <PropertyColumn Property="@(p => p.PersonId)" Sortable="true" />
