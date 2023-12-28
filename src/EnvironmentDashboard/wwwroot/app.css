@@ -14,7 +14,8 @@ body {
 }
 
 .content {
-    margin: 0 10px;
+    min-width: 0;
+    width: 100%;
 }
 
 footer {

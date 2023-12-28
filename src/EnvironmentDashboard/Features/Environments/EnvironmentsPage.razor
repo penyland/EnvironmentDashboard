@@ -1,77 +1,78 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Environments</PageTitle>
 
-<FluentBreadcrumb>
-    <FluentBreadcrumbItem Href="#">
-        Home
-        <FluentIcon Value="@(new Icons.Regular.Size16.Home())" Color="@Color.Neutral" Slot="start" />
-    </FluentBreadcrumbItem>
-    <FluentBreadcrumbItem Href="#">
-        Environments
-        <FluentIcon Value="@(new Icons.Regular.Size16.Clipboard())" Color="@Color.Neutral" Slot="start" />
-    </FluentBreadcrumbItem>
-</FluentBreadcrumb>
-<FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
-    <FluentButton IconStart="@(new Icons.Regular.Size16.AddCircle())">
-        Add Environment
-    </FluentButton>
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="10" Style="margin-top: 10px;">
+    <FluentBreadcrumb>
+        <FluentBreadcrumbItem Href="#">
+            Home
+            <FluentIcon Value="@(new Icons.Regular.Size16.Home())" Color="@Color.Neutral" Slot="start" />
+        </FluentBreadcrumbItem>
+        <FluentBreadcrumbItem Href="#">
+            Environments
+            <FluentIcon Value="@(new Icons.Regular.Size16.Clipboard())" Color="@Color.Neutral" Slot="start" />
+        </FluentBreadcrumbItem>
+    </FluentBreadcrumb>
 </FluentStack>
 
-<FluentCard>
-    <h2>Hello Environments!</h2>
-    <FluentIcon Value="@(new Icons.Regular.Size24.Clock())" />
-    <FluentEmoji Value="@(new Emojis.PeopleBody.Color.Default.Artist())" />
-    <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
-</FluentCard>
+<FluentToolbar Style="display: flex; width: 100%; margin-top:10px;">
+    <FluentStack>
+        <FluentLabel Typo="Typography.H3">Environments</FluentLabel>
+        <FluentSpacer />
+        <FluentButton IconStart="@(new Icons.Regular.Size16.ArrowSync())">Refresh</FluentButton>
 
-<FluentStack Orientation="Orientation.Horizontal">
-    <div style="width: 300px; margin-top:20px">
-        <h3>Feature</h3>
-        <div>
-            <FluentCard>
-                <FluentStack Orientation="Orientation.Horizontal">
-                    <FluentIcon Value="@(new Icons.Regular.Size24.Clock())" />
-                    <h4>ExampleService</h4>
-                </FluentStack>
-                <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
-            </FluentCard>
-        </div>
-    </div>
+        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.AddCircle())">
+            Add Environment
+        </FluentButton>
+    </FluentStack>
+</FluentToolbar>
+
+<FluentStack Orientation="Orientation.Horizontal" Style="margin-top: 20px;">
+    <FluentGrid>
+        <FluentGridItem>
+            <FluentStack Orientation="Orientation.Vertical" Width="500px">
+                <FluentLabel Typo="Typography.H3" MarginBlock="default">Feature</FluentLabel>
+                <FluentCard>
+                    <FluentStack Orientation="Orientation.Horizontal">
+                        <FluentIcon Value="@(new Icons.Regular.Size32.CloudCheckmark())" Color="@Color.Success" />
+                        <FluentLabel Typo="Typography.H4" MarginBlock="default">Billing API</FluentLabel>
+                        <FluentBadge Appearance="Appearance.Accent">
+                            20231228
+                        </FluentBadge>
+                    </FluentStack>
+                    <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
+                </FluentCard>
+
+                <FluentCard Style="margin-top: 10px">
+                    <FluentStack Orientation="Orientation.Horizontal">
+                        <FluentIcon Value="@(new Icons.Regular.Size32.CloudError())" Color="@Color.Error" />
+                        <FluentLabel Typo="Typography.H4" MarginBlock="default">Order API</FluentLabel>
+                    </FluentStack>
+                    <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
+                </FluentCard>
+
+            </FluentStack>
+        </FluentGridItem>
+
+        <FluentGridItem>
+            <FluentStack Orientation="Orientation.Vertical" Width="500px">
+                <FluentLabel Typo="Typography.H3" MarginBlock="default">Development</FluentLabel>
+                <FluentCard>
+                    <FluentStack Orientation="Orientation.Horizontal">
+                        <FluentIcon Value="@(new Icons.Regular.Size32.CloudCheckmark())" Color="@Color.Success" />
+                        <FluentLabel Typo="Typography.H4" MarginBlock="default">Billing API</FluentLabel>
+                        <FluentBadge Appearance="Appearance.Accent">
+                            20231220
+                        </FluentBadge>
+                    </FluentStack>
+                    <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
+                </FluentCard>
+
+            </FluentStack>
+        </FluentGridItem>
+    </FluentGrid>
 </FluentStack>
 
-<FluentDataGrid Items="@people">
-    <PropertyColumn Property="@(p => p.PersonId)" Sortable="true" />
-    <PropertyColumn Property="@(p => p.Name)" Sortable="true" />
-    <PropertyColumn Property="@(p => p.BirthDate)" Format="yyyy-MM-dd" Sortable="true" />
-</FluentDataGrid>
 
 @code {
-    record Person(int PersonId, string Name, DateOnly BirthDate);
-
-    IQueryable<Person> people = new[]
-    {
-        new Person(10895, "Jean Martin", new DateOnly(1985, 3, 16)),
-        new Person(10944, "António Langa", new DateOnly(1991, 12, 1)),
-        new Person(11203, "Julie Smith", new DateOnly(1958, 10, 10)),
-        new Person(11205, "Nur Sari", new DateOnly(1922, 4, 27)),
-        new Person(11898, "Jose Hernandez", new DateOnly(2011, 5, 3)),
-        new Person(12130, "Kenji Sato", new DateOnly(2004, 1, 9)),
-    }.AsQueryable();
 }
-
-@* <FluentDataGrid Items="@environments">
-    <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
-    <PropertyColumn Property="@(p => p.Name)" Sortable="true" />
-    <PropertyColumn Property="@(p => p.Url)" Sortable="true" />
-</FluentDataGrid>
-
-@code {
-
-    IQueryable<Environment> environments = new[]
-    {
-        new Environment(1, "Test", "Test", "Test"),
-        new Environment(1, "Test", "Test", "Test")
-    }.AsQueryable();
-
-} *@
