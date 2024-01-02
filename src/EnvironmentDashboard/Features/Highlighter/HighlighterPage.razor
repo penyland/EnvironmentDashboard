@@ -1,0 +1,42 @@
+﻿@page "/highlighter"
+
+@inject PrismHighlighter Highlighter
+
+@rendermode InteractiveServer 
+
+<h3>HighlighterPage</h3>
+
+<FluentButton Primary="true" OnClick="@(() => HighlightAsync(myCode))">Highlight</FluentButton>
+
+<pre class="language-@Language">
+    <code>
+        @sourceCode
+    </code>
+</pre>
+
+@code {
+
+
+    [Parameter]
+    public string Language { get; set; } = "json";
+
+    MarkupString sourceCode { get; set; }
+
+    //     protected override async Task OnAfterRenderAsync(bool firstRender)
+    //     {
+    //         if (firstRender)
+    //         {
+    //             await Highlighter.HighlightAllAsync();
+    //         }
+    //     }
+
+    public async Task HighlightAsync(string code)
+    {
+        sourceCode = await Highlighter.HighlightAsync(code, Language);        
+    }
+
+    protected override void OnInitialized()
+    {
+        sourceCode = new MarkupString(myCode);        
+    }
+}
