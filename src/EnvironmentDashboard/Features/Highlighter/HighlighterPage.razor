@@ -2,14 +2,12 @@
 
 @inject PrismHighlighter Highlighter
 
-@rendermode InteractiveServer 
+@rendermode InteractiveServer
 
 <h3>HighlighterPage</h3>
 
-<FluentButton Primary="true" OnClick="@(() => HighlightAsync(myCode))">Highlight</FluentButton>
-
 <pre class="language-@Language">
-    <code>
+<code>
         @sourceCode
     </code>
 </pre>
@@ -22,21 +20,17 @@
 
     MarkupString sourceCode { get; set; }
 
-    //     protected override async Task OnAfterRenderAsync(bool firstRender)
-    //     {
-    //         if (firstRender)
-    //         {
-    //             await Highlighter.HighlightAllAsync();
-    //         }
-    //     }
-
-    public async Task HighlightAsync(string code)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        sourceCode = await Highlighter.HighlightAsync(code, Language);        
+        if (firstRender)
+        {
+            await Highlighter.HighlightAllAsync();
+        }
     }
 
-    protected override void OnInitialized()
+    protected override Task OnInitializedAsync()
     {
-        sourceCode = new MarkupString(myCode);        
+        sourceCode = new MarkupString(myCode);
+        return base.OnInitializedAsync();
     }
 }
