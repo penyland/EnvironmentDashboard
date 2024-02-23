@@ -1,0 +1,43 @@
+﻿@page "/managed-identities"
+
+<h3>ManagedIdentities</h3>
+
+<FluentToolbar id="toolbar-links" Style="width:100%;margin-bottom:15px;">
+    <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.New())" Loading="IsBusy">New</FluentButton>
+    <FluentButton IconStart="@(new Icons.Regular.Size16.ArrowSync())" Loading="IsBusy">Refresh</FluentButton>
+
+    <FluentSpacer />
+
+    @*     <FluentAutocomplete TOption="Tag" Placeholder="Filter by tags" OnOptionsSearch="@OnSearchTagAsync"
+    Disabled="!string.IsNullOrWhiteSpace(SearchTerm)" OptionText="@(i => i.Name)"
+    @bind-SelectedOptions="@SelectedTags" Width="300px" Style="display: inline-flex;" />
+
+    <FluentButton IconStart="@(new Icons.Regular.Size16.Filter())" Loading="IsBusy" OnClick="() => FilterByTag(true)">
+    Filter
+    </FluentButton>
+
+    <FluentSpacer Width="10" />
+
+    <FluentSearch @bind-Value=SearchTerm Placeholder="Token or Note" Disabled="IsBusy || SelectedTags.Any()"
+    AfterBindValue="HandleSearchInput"></FluentSearch> *@
+</FluentToolbar>
+
+<FluentGrid Spacing="3" Style="margin-top: 10px">
+    <FluentGridItem md="4" sm="6" xs="12">
+        <FluentCard>
+
+            <FluentDataGrid Items="@Applications" GenerateHeader="GenerateHeaderOption.Sticky"
+                            GridTemplateColumns="0.3fr 0.4fr 0.4fr">
+                <PropertyColumn Property="@(p => p.DisplayName)" Sortable="true" />
+                <TemplateColumn Title="AppId">@context.AppId</TemplateColumn>
+                <TemplateColumn Title="Id">@context.Id</TemplateColumn>
+            </FluentDataGrid>
+
+        </FluentCard>
+    </FluentGridItem>
+    <FluentGridItem md="4" sm="6" xs="12">
+        <FluentCard>
+        </FluentCard>
+    </FluentGridItem>
+
+</FluentGrid>

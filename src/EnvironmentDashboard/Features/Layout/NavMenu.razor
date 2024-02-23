@@ -2,9 +2,9 @@
 
 <nav>
     <FluentNavMenu Width="250" Collapsible="true" Title="Custom navigation menu">
-        <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/home.svg")" IconColor="Color.Accent">Home</FluentNavLink>
+        <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())">Dashboard</FluentNavLink>
+        <FluentNavLink Href="/environments" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.ServerMultiple())">Environments</FluentNavLink>
+        <FluentNavLink Href="/managed-identities" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/home.svg")">Identities</FluentNavLink>
         <FluentNavLink Href="/highlighter" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/home.svg")" IconColor="Color.Accent">Highlighter</FluentNavLink>
-        <FluentNavLink Href="counter" Icon="@Icon.FromImageUrl("/images/counter.svg")" IconColor="Color.Accent">Counter</FluentNavLink>
-        <FluentNavLink Href="weather" Icon="@Icon.FromImageUrl("/images/weather.svg")" IconColor="Color.Accent">Weather</FluentNavLink>
     </FluentNavMenu>
 </nav>
