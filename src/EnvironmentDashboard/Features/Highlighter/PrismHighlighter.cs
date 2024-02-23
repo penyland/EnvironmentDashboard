@@ -17,9 +17,9 @@ public class PrismHighlighter
         await jsRuntime.InvokeVoidAsync("highlightAll");
     }
 
-    public async Task<MarkupString> HighlightAsync(string code, string language = "json")
+    public async ValueTask<MarkupString> HighlightAsync(string code, string language = "json")
     {
-        var highlightedString = await jsRuntime.InvokeAsync<string>("highlightJson", code); //, language);
+        var highlightedString = await jsRuntime.InvokeAsync<string>("highlight", code, language);
         return new MarkupString(highlightedString);
     }
 }

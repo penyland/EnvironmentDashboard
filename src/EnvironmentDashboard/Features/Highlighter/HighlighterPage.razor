@@ -1,36 +1,12 @@
 ﻿@page "/highlighter"
 
-@inject PrismHighlighter Highlighter
-
-@rendermode InteractiveServer
-
 <h3>HighlighterPage</h3>
 
-<pre class="language-@Language">
-<code>
-        @sourceCode
-    </code>
-</pre>
+<HighlightedCode Code="@myCode" Language="@Language" />
 
 @code {
 
 
     [Parameter]
     public string Language { get; set; } = "json";
-
-    MarkupString sourceCode { get; set; }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await Highlighter.HighlightAllAsync();
-        }
-    }
-
-    protected override Task OnInitializedAsync()
-    {
-        sourceCode = new MarkupString(myCode);
-        return base.OnInitializedAsync();
-    }
 }

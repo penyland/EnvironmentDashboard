@@ -1,0 +1,28 @@
+﻿@inject PrismHighlighter Highlighter
+
+@rendermode InteractiveServer
+
+<pre class="language-@Language">
+    <code>
+        @sourceCode
+    </code>
+</pre>
+
+@code {
+    [Parameter]
+    public string? Code { get; set; }
+
+    [Parameter]
+    public string Language { get; set; } = "json";
+
+    MarkupString sourceCode { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            sourceCode = await Highlighter.HighlightAsync(Code!, Language);
+            StateHasChanged();
+        }
+    }
+}
