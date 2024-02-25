@@ -1,6 +1,8 @@
 ﻿@page "/managed-identities"
 
-<h3>ManagedIdentities</h3>
+@rendermode InteractiveServer
+
+<FluentLabel Typo="Typography.PageTitle">Managed Identities</FluentLabel>
 
 <FluentToolbar id="toolbar-links" Style="width:100%;margin-bottom:15px;">
     <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.New())" Loading="IsBusy">New</FluentButton>
@@ -22,21 +24,85 @@
     AfterBindValue="HandleSearchInput"></FluentSearch> *@
 </FluentToolbar>
 
-<FluentGrid Spacing="3" Style="margin-top: 10px">
-    <FluentGridItem md="4" sm="6" xs="12">
+<FluentGrid Spacing="3" Style="margin-top: 10px margin-right: 10px;" OnBreakpointEnter="@OnBreakpointEnterHandler">
+    <FluentGridItem xxl="9" xl="8" md="12" sm="12" xs="12">
         <FluentCard>
 
             <FluentDataGrid Items="@Applications" GenerateHeader="GenerateHeaderOption.Sticky"
-                            GridTemplateColumns="0.3fr 0.4fr 0.4fr">
-                <PropertyColumn Property="@(p => p.DisplayName)" Sortable="true" />
-                <TemplateColumn Title="AppId">@context.AppId</TemplateColumn>
-                <TemplateColumn Title="Id">@context.Id</TemplateColumn>
+                            GridTemplateColumns="0.8fr 1.0fr 1.0fr">
+                <TemplateColumn Title="DisplayName">
+                    <FluentButton Appearance="Appearance.Lightweight" OnClick="@(async () => await OnAppIdClickAsync(context.AppId))">
+                        @context.DisplayName
+                    </FluentButton>
+                </TemplateColumn>
+                <TemplateColumn Title="AppId">
+                    <FluentButton Appearance="Appearance.Lightweight" OnClick="@(async () => await OnAppIdClickAsync(context.AppId))">
+                        @context.AppId
+                    </FluentButton>
+                </TemplateColumn>
+                <TemplateColumn Title="Id">
+                    <FluentButton Appearance="Appearance.Lightweight" OnClick="@(async () => await OnAppIdClickAsync(context.AppId))">
+                        @context.Id
+                    </FluentButton>
+                </TemplateColumn>
             </FluentDataGrid>
 
         </FluentCard>
     </FluentGridItem>
-    <FluentGridItem md="4" sm="6" xs="12">
+    <FluentGridItem xxl="3" xl="4" md="12" sm="12" xs="12">
         <FluentCard>
+            <FluentLabel Typo="Typography.Header">Application Details:</FluentLabel>
+
+            @if (SelectedApplication != null)
+            {
+                <FluentGrid Style="margin-top: 10px">
+                    <FluentGridItem xxl="12" lg="6" md="6" sm="12">
+                        <table>
+                            <tr>
+                                <td>DisplayName</td>
+                                <td style="padding: 0 10px 0 10px;">:</td>
+                                <td>@SelectedApplication?.DisplayName</td>
+                            </tr>
+                            <tr>
+                                <td>Application (Client) Id</td>
+                                <td style="padding: 0 10px 0 10px;">:</td>
+                                <td>@SelectedApplication?.AppId</td>
+                            </tr>
+                            <tr>
+                                <td>Object Id:</td>
+                                <td style="padding: 0 10px 0 10px;">:</td>
+                                <td>@SelectedApplication?.Id</td>
+                            </tr>
+                        </table>
+                    </FluentGridItem>
+                    <FluentGridItem xl="12" lg="6" md="6" sm="12">
+                        <table>
+                            <tr>
+                                <td>Application ID URI</td>
+                                <td style="padding: 0 10px 0 10px;">:</td>
+                                <td>SelectedApplication?.AppIdUri</td>
+                            </tr>
+                            <tr>
+                                <td>Managed in application</td>
+                                <td style="padding: 0 10px 0 10px;">:</td>
+                                <td>SelectedApplication?.ManagedInApplication</td>
+                            </tr>
+                            <tr>
+                                <td>Tags</td>
+                                <td style="padding: 0 10px 0 10px;">:</td>
+                                <td>
+                                    @foreach (var tag in SelectedApplication!.Tags)
+                                    {
+                                        <FluentBadge Appearance="Appearance.Accent" Style="margin-right: 5px;">
+                                            @tag
+                                        </FluentBadge>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </FluentGridItem>
+                </FluentGrid>
+            }
         </FluentCard>
     </FluentGridItem>
 

@@ -1,10 +1,42 @@
-﻿@rendermode InteractiveServer
+﻿@using System.Diagnostics
+@rendermode InteractiveServer
+
 
 <nav>
-    <FluentNavMenu Width="250" Collapsible="true" Title="Custom navigation menu">
+    <FluentNavMenu Expanded="@expanded" Width="250" Collapsible="true" Title="Custom navigation menu" ExpandedChanged="@OnExpandedChanged">
         <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())">Dashboard</FluentNavLink>
         <FluentNavLink Href="/environments" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.ServerMultiple())">Environments</FluentNavLink>
         <FluentNavLink Href="/managed-identities" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/home.svg")">Identities</FluentNavLink>
         <FluentNavLink Href="/highlighter" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/home.svg")" IconColor="Color.Accent">Highlighter</FluentNavLink>
     </FluentNavMenu>
 </nav>
+<FluentGrid OnBreakpointEnter="@OnBreakpointEnterHandler" Style="width:10px">
+</FluentGrid>
+
+@code {
+
+    private bool expanded = true;
+
+    private void OnBreakpointEnterHandler(GridItemSize size)
+    {
+        Debug.WriteLine($"Breakpoint entered: {size}");
+
+        switch (size)
+        {
+            case GridItemSize.Xs:
+            case GridItemSize.Sm:
+                // Collapse the menu
+                expanded = false;
+                break;
+            default:
+                // Expand the menu
+                expanded = true;
+                break;
+        }
+    }
+
+    private void OnExpandedChanged(bool expanded)
+    {
+        Debug.WriteLine($"Expanded: {expanded}");
+    }
+}

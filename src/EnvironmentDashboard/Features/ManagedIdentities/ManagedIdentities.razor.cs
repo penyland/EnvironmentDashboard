@@ -1,10 +1,15 @@
-﻿namespace EnvironmentDashboard.Features.ManagedIdentities;
+﻿using Microsoft.FluentUI.AspNetCore.Components;
+using System.Diagnostics;
+
+namespace EnvironmentDashboard.Features.ManagedIdentities;
 
 public partial class ManagedIdentities
 {
     public bool IsBusy { get; set; }
 
     public IQueryable<Application> Applications { get; set; }
+
+    public Application SelectedApplication { get; set; } = new();
 
     protected override void OnInitialized()
     {
@@ -16,7 +21,8 @@ public partial class ManagedIdentities
             {
                 AppId = "2132d464-fd92-4d1c-a8d9-48a47bec2994",
                 Id = "1601866c-a404-4df5-b9c2-4ac5d7b8a45b",
-                DisplayName = "Application 1"
+                DisplayName = "Application 1",
+                Tags = ["tag1", "tag2"]
             },
             new()
             {
@@ -31,5 +37,24 @@ public partial class ManagedIdentities
                 DisplayName = "Application 3"
             }
         }.AsQueryable();
+    }
+
+    internal void OnBreakpointEnterHandler(GridItemSize size)
+    {
+        Console.WriteLine($"Breakpoint entered: {size}");
+        Debug.WriteLine($"Breakpoint entered: {size}");
+    }
+
+    internal Task OnAppIdClickAsync(string appId)
+    {
+        Debug.WriteLine($"AppId clicked: {appId}");
+
+        var application = Applications.FirstOrDefault(a => a.AppId == appId);
+        if (application is not null)
+        {
+            SelectedApplication = application;
+        }
+
+        return Task.CompletedTask;
     }
 }
