@@ -198,7 +198,7 @@ dotnet_diagnostic.SA1637.severity = none
 dotnet_diagnostic.SA1638.severity = none
 dotnet_diagnostic.SA1640.severity = none
 dotnet_diagnostic.SA1641.severity = none
-dotnet_diagnostic.SA1649.severity = suggestion
+dotnet_diagnostic.SA1649.severity = silent
 dotnet_diagnostic.SA1652.severity = none
 csharp_using_directive_placement = outside_namespace:warning
 csharp_prefer_simple_using_statement = true:suggestion
@@ -232,6 +232,8 @@ csharp_style_prefer_not_pattern = true:suggestion
 csharp_style_prefer_extended_property_pattern = true:suggestion
 dotnet_diagnostic.SA1623.severity = suggestion
 dotnet_diagnostic.SA1206.severity = silent
+csharp_style_prefer_primary_constructors = true:suggestion
+csharp_style_prefer_readonly_struct_member = true:suggestion
 
 # Description: Code analysis rules for this project.
 # Code files
@@ -368,3 +370,4 @@ dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_qualification_for_field = false:suggestion
 dotnet_style_qualification_for_event = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_prefer_collection_expression = when_types_loosely_match:suggestion

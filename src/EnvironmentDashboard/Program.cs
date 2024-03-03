@@ -1,6 +1,7 @@
 using EnvironmentDashboard.Features;
 using EnvironmentDashboard.Features.Highlighter;
 using Microsoft.FluentUI.AspNetCore.Components;
+using Penyland.MicrosoftGraphClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddFluentUIComponents();
 builder.Services.AddHttpClient();
-
+builder.Services.AddGraphClient(builder.Configuration);
 
 builder.Services.AddScoped<PrismHighlighter>();
 

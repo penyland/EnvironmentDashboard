@@ -1,9 +1,8 @@
 ﻿@using System.Diagnostics
 @rendermode InteractiveServer
 
-
 <nav>
-    <FluentNavMenu Expanded="@expanded" Width="250" Collapsible="true" Title="Custom navigation menu" ExpandedChanged="@OnExpandedChanged">
+    <FluentNavMenu @bind-Expanded="@expanded" Width="250" Collapsible="true" Title="Custom navigation menu">
         <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())">Dashboard</FluentNavLink>
         <FluentNavLink Href="/environments" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.ServerMultiple())">Environments</FluentNavLink>
         <FluentNavLink Href="/managed-identities" Match="NavLinkMatch.All" Icon="@Icon.FromImageUrl("/images/home.svg")">Identities</FluentNavLink>
@@ -37,6 +36,7 @@
 
     private void OnExpandedChanged(bool expanded)
     {
+        expanded = !expanded;
         Debug.WriteLine($"Expanded: {expanded}");
     }
 }
