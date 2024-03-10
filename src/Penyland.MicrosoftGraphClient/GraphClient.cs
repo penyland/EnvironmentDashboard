@@ -1,15 +1,24 @@
 ﻿using Azure.Identity;
 using Microsoft.Graph;
+using Microsoft.Graph.Models;
 
 namespace Penyland.MicrosoftGraphClient;
 
 public interface IGraphClient
 {
+    Task<Application?> GetApplicationAsync(string appId);
+
     Task<IReadOnlyCollection<Application>> GetApplicationsAsync(string? tag = default);
 
     Task<ServicePrincipal?> GetServicePrincipalAsync(string appId);
 
     Task<IReadOnlyCollection<ServicePrincipal>> GetServicePrincipalsAsync();
+
+    Task<AppRoleAssignment?> AssignAppRoleToServicePrincipalAsync(string servicePrincipalId, string appRoleId, string resourceId);
+
+    Task<IReadOnlyCollection<AppRoleAssignment>> ListAppRoleAssignmentsAsync(string servicePrincipalId);
+
+    Task RemoveAppRoleAssignmentAsync(string servicePrincipalId, string appRoleAssignmentId);
 }
 
 public class GraphClient : IGraphClient
@@ -31,6 +40,31 @@ public class GraphClient : IGraphClient
     public GraphClient(GraphServiceClient graphServiceClient)
     {
         this.graphServiceClient = graphServiceClient;
+    }
+
+    public async Task<Application?> GetApplicationAsync(string appId)
+    {
+        var response = await graphServiceClient.Applications.GetAsync(requestConfig =>
+        {
+            requestConfig.QueryParameters.Filter = $"appId eq '{appId}'";
+        });
+
+        if (response != null && response.Value != null)
+        {
+            var responseValue = response.Value.First();
+
+            return new Application
+            {
+                Id = responseValue.Id ?? string.Empty,
+                AppId = responseValue.AppId ?? string.Empty,
+                AppRoles = responseValue.AppRoles?.Select(t => t.DisplayName).ToList() ?? [],
+                DisplayName = responseValue.DisplayName ?? string.Empty,
+                IdentifierUris = responseValue.IdentifierUris?.ToList() ?? [],
+                Tags = responseValue.Tags?.ToList() ?? []
+            };
+        }
+
+        return default;
     }
 
     public async Task<IReadOnlyCollection<Application>> GetApplicationsAsync(string? tag = default)
@@ -127,6 +161,48 @@ public class GraphClient : IGraphClient
             }
 
             return servicePrincipals;
+        }
+
+        return [];
+    }
+
+    public async Task<AppRoleAssignment?> AssignAppRoleToServicePrincipalAsync(string servicePrincipalId, string appRoleId, string resourceId)
+    {
+        var appRoleAssignment = new AppRoleAssignment
+        {
+            PrincipalId = Guid.Parse(servicePrincipalId),
+            ResourceId = Guid.Parse(resourceId),
+            AppRoleId = Guid.Parse(appRoleId)
+        };
+
+        var result = await graphServiceClient.ServicePrincipals[servicePrincipalId].AppRoleAssignments.PostAsync(appRoleAssignment);
+
+        return result;
+    }
+
+    public async Task RemoveAppRoleAssignmentAsync(string servicePrincipalId, string appRoleAssignmentId)
+    {
+        await graphServiceClient.ServicePrincipals[servicePrincipalId].AppRoleAssignedTo[appRoleAssignmentId].DeleteAsync();
+    }
+
+    public async Task<IReadOnlyCollection<AppRoleAssignment>> ListAppRoleAssignmentsAsync(string servicePrincipalId)
+    {
+        var response = await graphServiceClient.ServicePrincipals[servicePrincipalId].AppRoleAssignments.GetAsync();
+
+        if (response != null && response.Value != null)
+        {
+            var appRoleAssignments = new List<AppRoleAssignment>();
+            foreach (var appRoleAssignment in response.Value)
+            {
+                appRoleAssignments.Add(new AppRoleAssignment
+                {
+                    PrincipalId = appRoleAssignment.PrincipalId,
+                    ResourceId = appRoleAssignment.ResourceId,
+                    AppRoleId = appRoleAssignment.AppRoleId
+                });
+            }
+
+            return appRoleAssignments;
         }
 
         return [];
