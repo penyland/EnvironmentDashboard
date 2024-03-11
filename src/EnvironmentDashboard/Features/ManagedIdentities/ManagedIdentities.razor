@@ -1,6 +1,10 @@
 ﻿@page "/managed-identities"
 
+@inject IDialogService DialogService
+
 @rendermode InteractiveServer
+
+<FluentDialogProvider />
 
 <FluentLabel Typo="Typography.PageTitle">Managed Identities</FluentLabel>
 
@@ -79,6 +83,8 @@
                                 <td>@SelectedIdentity?.Id</td>
                             </tr>
                         </table>
+
+                        <FluentButton IconStart="@(new Icons.Regular.Size16.CalendarAssistant())" OnClick="OpenDialogAsync">Assign App Role</FluentButton>
                     </FluentGridItem>
                     <FluentGridItem xl="12" lg="6" md="6" sm="12">
                         <table>

@@ -115,12 +115,45 @@ public partial class ManagedIdentities
                 AppId = t.AppId,
                 DisplayName = t.DisplayName,
                 Id = t.Id,
+                ObjectId = t.Id,
                 Tags = t.Tags,
                 IdentityType = IdentityType.AppRegistration
             })
             .AsQueryable();
 
         IsBusy = false;
+    }
+
+    private async Task OpenDialogAsync()
+    {
+        await DialogService.ShowDialogAsync<AssignAppRoleDialog>(SelectedIdentity, new DialogParameters()
+        {
+            Title = $"{SelectedIdentity.DisplayName}",
+            OnDialogResult = DialogService.CreateDialogCallback(this, HandleDialog),
+            PrimaryAction = "Yes",
+            PrimaryActionEnabled = false,
+            SecondaryAction = "No",
+            Width = "500px",
+            Height = "500px",
+            TrapFocus = true,
+            Modal = true,
+        });
+    }
+
+    private Task HandleDialog(DialogResult result)
+    {
+        if (result.Cancelled)
+        {
+            return Task.CompletedTask;
+        }
+
+        if (result.Data is not null)
+        {
+            //SimplePerson? simplePerson = result.Data as SimplePerson;
+            return Task.CompletedTask;
+        }
+
+        return Task.CompletedTask;
     }
 
     public enum IdentityType
@@ -138,6 +171,8 @@ public partial class ManagedIdentities
 
         public string AppIdUri { get; init; } = string.Empty;
 
+        public string ObjectId { get; init; } = string.Empty;
+
         public string DisplayName { get; init; } = string.Empty;
 
         public List<string> AppRoles { get; init; } = new();
@@ -147,5 +182,14 @@ public partial class ManagedIdentities
         public List<string> Tags { get; init; } = new();
 
         public IdentityType IdentityType { get; init; } = IdentityType.ManagedIdentity;
+    }
+
+    public record SimplePerson
+    {
+        public string Firstname { get; set; }
+
+        public string Lastname { get; set; }
+
+        public int Age { get; set; }
     }
 }

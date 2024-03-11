@@ -234,6 +234,7 @@ dotnet_diagnostic.SA1623.severity = suggestion
 dotnet_diagnostic.SA1206.severity = silent
 csharp_style_prefer_primary_constructors = true:suggestion
 csharp_style_prefer_readonly_struct_member = true:suggestion
+dotnet_diagnostic.SA1400.severity = suggestion
 
 # Description: Code analysis rules for this project.
 # Code files

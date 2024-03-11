@@ -1,0 +1,35 @@
+﻿@using Penyland.MicrosoftGraphClient
+@using static EnvironmentDashboard.Features.ManagedIdentities.ManagedIdentities
+
+@implements IDialogContentComponent<Identity>
+
+@* <FluentMessageBarProvider Section="@App.MESSAGES_DIALOG" MaxMessageCount="1" /> *@
+
+<p>Assigned roles:</p>
+
+<p>Assign role:</p>
+<p>Select App Registration</p>
+
+<p>Assign AppRole to @Content.AppId and you are @Content.ObjectId years young </p>
+
+@if (Dialog != null)
+{
+    <FluentStack Orientation="Orientation.Vertical" Style="border: 1px solid red; padding: 10px">
+        <span>This section is visible only when component is hosted inside a Dialog</span>
+        <FluentButton OnClick="@(() => ToggleDialogPrimaryActionButton(true))">Enable Dialog Primary Action</FluentButton>
+        <FluentButton OnClick="@(() => ToggleDialogPrimaryActionButton(false))">Disable Dialog Primary Action</FluentButton>
+    </FluentStack>
+}
+
+@code {
+    [Parameter]
+    public Identity Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog? Dialog { get; set; }
+
+    private void ToggleDialogPrimaryActionButton(bool enable)
+    {
+        Dialog!.TogglePrimaryActionButton(enable);
+    }
+}
