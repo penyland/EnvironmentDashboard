@@ -69,44 +69,68 @@ public class GraphClient : IGraphClient
 
     public async Task<IReadOnlyCollection<Application>> GetApplicationsAsync(string? tag = default)
     {
-        var response = await graphServiceClient.Applications.GetAsync(config =>
+        try
         {
-            if (string.IsNullOrEmpty(tag))
+            var response = await graphServiceClient.Applications.GetAsync(config =>
             {
-                return;
-            }
-            else
-            {
-                config.QueryParameters.Filter = $"tags/any(t: t eq '{tag}')";
-            }
+                if (string.IsNullOrEmpty(tag))
+                {
+                    return;
+                }
+                else
+                {
+                    config.QueryParameters.Filter = $"tags/any(t: t eq '{tag}')";
+                }
 
-            //config.QueryParameters.Select = ["id, appId, displayName"];
-            config.QueryParameters.Orderby = ["displayName"];
-            config.Headers.Add("ConsistencyLevel", "eventual");
-        });
-
-        if (response != null && response.Value != null)
-        {
-            var applications = new List<Application>();
-            var l = response.Value.Select(app => new Application
-            {
-                Id = app.Id ?? string.Empty,
+                //config.QueryParameters.Select = ["id, appId, displayName"];
+                config.QueryParameters.Orderby = ["displayName"];
+                config.Headers.Add("ConsistencyLevel", "eventual");
             });
 
-            foreach (var application in response.Value)
+            if (response != null && response.Value != null)
             {
-                applications.Add(new Application
+                var applications = new List<Application>();
+                var l = response.Value.Select(app => new Application
                 {
-                    Id = application.Id ?? string.Empty,
-                    AppId = application.AppId ?? string.Empty,
-                    AppRoles = application.AppRoles?.Select(t => t.DisplayName).ToList() ?? [],
-                    DisplayName = application.DisplayName ?? string.Empty,
-                    IdentifierUris = application.IdentifierUris?.ToList() ?? [],
-                    Tags = application.Tags?.ToList() ?? []
+                    Id = app.Id ?? string.Empty,
                 });
+
+                foreach (var application in response.Value)
+                {
+                    applications.Add(new Application
+                    {
+                        Id = application.Id ?? string.Empty,
+                        AppId = application.AppId ?? string.Empty,
+                        AppRoles = application.AppRoles?.Select(t => t.DisplayName).ToList() ?? [],
+                        DisplayName = application.DisplayName ?? string.Empty,
+                        IdentifierUris = application.IdentifierUris?.ToList() ?? [],
+                        Tags = application.Tags?.ToList() ?? []
+                    });
+                }
+
+                return applications;
+            }
+        }
+        catch (Azure.Identity.AuthenticationFailedException ex)
+        {
+            // Handle OData errors, such as 404 Not Found or 403 Forbidden
+            Console.WriteLine($"OData error: {ex.Message}");
+            if (ex.Message.Contains("ClientSecretCredential authentication failed: "))
+            {
+                Console.WriteLine("Please check your Azure AD application credentials and permissions.");
             }
 
-            return applications;
+            return [];
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            throw;
+        }
+        finally
+        {
+            // Optionally, you can log or handle other exceptions here
         }
 
         return [];

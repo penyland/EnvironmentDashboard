@@ -166,6 +166,7 @@ dotnet_naming_symbols.everything_else_symbols.applicable_kinds = class,struct,en
 dotnet_naming_symbols.everything_else_symbols.applicable_accessibilities = *
 
 # StyleCop diagnostics severity
+dotnet_diagnostic.CS0168.severity = suggestion
 dotnet_diagnostic.SA0001.severity = suggestion
 dotnet_diagnostic.SA1000.severity = suggestion
 dotnet_diagnostic.SA1005.severity = suggestion
@@ -235,6 +236,12 @@ dotnet_diagnostic.SA1206.severity = silent
 csharp_style_prefer_primary_constructors = true:suggestion
 csharp_style_prefer_readonly_struct_member = true:suggestion
 dotnet_diagnostic.SA1400.severity = suggestion
+csharp_prefer_system_threading_lock = true:suggestion
+csharp_style_prefer_implicitly_typed_lambda_expression = true:suggestion
+csharp_style_prefer_unbound_generic_type_in_nameof = true:suggestion
+dotnet_diagnostic.SA1505.severity = suggestion
+dotnet_diagnostic.SA1508.severity = suggestion
+dotnet_diagnostic.SA1513.severity = suggestion
 
 # Description: Code analysis rules for this project.
 # Code files

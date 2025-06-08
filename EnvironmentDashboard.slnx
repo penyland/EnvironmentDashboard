@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Folder/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="LICENSE" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/EnvironmentDashboard/EnvironmentDashboard.csproj" />
+    <Project Path="src/Penyland.MicrosoftGraphClient/Penyland.MicrosoftGraphClient.csproj" />
+  </Folder>
+</Solution>

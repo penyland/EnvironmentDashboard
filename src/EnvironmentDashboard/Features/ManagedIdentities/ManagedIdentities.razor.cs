@@ -101,25 +101,33 @@ public partial class ManagedIdentities
     internal async Task GetApplicationsFromGraphApiAsync()
     {
         IsBusy = true;
-        var applications = await GraphClient.GetApplicationsAsync();
-
-        foreach (var application in applications)
+        try
         {
-            var servicePrincipal = await GraphClient.GetServicePrincipalAsync(application.AppId);
-        }
+            var applications = await GraphClient.GetApplicationsAsync();
 
-        Identities = applications
-            .OrderBy(t => t.DisplayName)
-            .Select(t => new Identity
+            foreach (var application in applications)
             {
-                AppId = t.AppId,
-                DisplayName = t.DisplayName,
-                Id = t.Id,
-                ObjectId = t.Id,
-                Tags = t.Tags,
-                IdentityType = IdentityType.AppRegistration
-            })
-            .AsQueryable();
+                var servicePrincipal = await GraphClient.GetServicePrincipalAsync(application.AppId);
+            }
+
+            Identities = applications
+                .OrderBy(t => t.DisplayName)
+                .Select(t => new Identity
+                {
+                    AppId = t.AppId,
+                    DisplayName = t.DisplayName,
+                    Id = t.Id,
+                    ObjectId = t.Id,
+                    Tags = t.Tags,
+                    IdentityType = IdentityType.AppRegistration
+                })
+                .AsQueryable();
+
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
 
         IsBusy = false;
     }
